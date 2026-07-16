@@ -27,5 +27,8 @@ htmlcov/
 # Local SQLite dev database
 *.db
 
+# Local data-lake output from the transform job (dev only)
+data/
+
 # Environment files
 .env

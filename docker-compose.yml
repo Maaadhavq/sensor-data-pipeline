@@ -14,6 +14,14 @@ services:
     volumes:
       - .:/app
 
+  # Optional live-data feed: docker compose --profile sim up
+  simulator:
+    build: .
+    command: python simulator/simulate.py --url http://api:8000
+    depends_on:
+      - api
+    profiles: ["sim"]
+
   db:
     image: postgres:16
     restart: always

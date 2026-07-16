@@ -54,6 +54,40 @@ Or with Docker (brings up its own Postgres on host port 5433):
 docker compose up --build
 ```
 
+## Simulator (Phase 2)
+
+Four fake sensors (2x temperature, 2x humidity) with a realistic daily
+cycle -- warmest mid-afternoon, humidity inversely correlated -- plus noise:
+
+```bash
+python simulator/simulate.py --url http://localhost:8001 --interval 5
+python simulator/simulate.py --once     # single round, for testing
+```
+
+In production it runs as the `simulator` compose service, so live data
+flows continuously during the demo. Locally: `docker compose --profile sim up`.
+
+## Transformation job (Phase 2)
+
+Aggregates one hour of raw readings (avg/min/max/count per sensor) into
+`hourly_aggregates` and archives the raw batch as Parquet -- to the S3 data
+lake when `S3_BUCKET_NAME` is set, otherwise to `data/lake/` locally.
+Hive-style partitions: `raw/year=2026/month=07/day=16/hour=15/readings.parquet`.
+
+```bash
+python -m jobs.transform                       # last completed hour
+python -m jobs.transform --hour 2026-07-16T14  # backfill a specific hour (UTC)
+```
+
+Idempotent: re-running an hour upserts aggregates (unique on
+sensor_id + hour_start) and overwrites the same Parquet partition.
+
+Scheduled on EC2 via cron, 5 minutes past each hour:
+
+```cron
+5 * * * * cd ~/sensor-data-pipeline && docker compose -f docker-compose.prod.yml exec -T api python -m jobs.transform >> ~/transform.log 2>&1
+```
+
 ## Tests
 
 ```bash
@@ -74,6 +108,6 @@ on 8000). Required repo secrets: `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`,
 ## Roadmap
 
 - [x] Phase 1 — ingestion + real-time API, tables, Docker, CI/CD
-- [ ] Phase 2 — sensor simulator + hourly transformation job + S3 Parquet archival
+- [x] Phase 2 — sensor simulator + hourly transformation job + S3 Parquet archival
 - [ ] Phase 3 — analytics endpoints (`/insights/hourly`, `/insights/summary`) + Vercel dashboard
 - [ ] Phase 4 — architecture diagram, API docs, demo workflow, presentation
