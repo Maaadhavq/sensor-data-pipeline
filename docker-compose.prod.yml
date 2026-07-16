@@ -1,0 +1,11 @@
+# Production compose used on EC2 by the CI/CD deploy step.
+# No local Postgres container -- DATABASE_URL in .env points at RDS.
+# Host port 8001 so it coexists with employee-management-api on 8000.
+services:
+  api:
+    image: ${DOCKERHUB_USERNAME:-maaadhavq}/sensor-data-pipeline:latest
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    env_file:
+      - .env

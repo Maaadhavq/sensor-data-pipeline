@@ -1,0 +1,30 @@
+# Host port 8001 so this can run on the same EC2 instance as
+# employee-management-api (which owns 8000).
+services:
+  api:
+    build: .
+    ports:
+      - "8001:8000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/sensor_db
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sensor_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - sensor_pgdata:/var/lib/postgresql/data
+
+volumes:
+  sensor_pgdata:
