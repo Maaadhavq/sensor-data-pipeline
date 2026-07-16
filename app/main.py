@@ -15,6 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import init_db
+from app.routers.insights import router as insights_router
 from app.routers.sensors import router as sensors_router
 
 
@@ -43,6 +44,7 @@ app.add_middleware(
 )
 
 app.include_router(sensors_router)
+app.include_router(insights_router)
 
 
 @app.get("/", tags=["Meta"], summary="API root")

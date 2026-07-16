@@ -27,14 +27,16 @@ Parquet; a Next.js dashboard on Vercel charts the insights.
                                           [Frontend dashboard (Next.js, Vercel)]
 ```
 
-## API (Phase 1)
+## API
 
-| Method | Path                | Description                          |
-|--------|---------------------|--------------------------------------|
-| POST   | `/sensors/readings` | Ingest one reading                   |
-| GET    | `/sensors/latest`   | Most recent reading per sensor       |
-| GET    | `/health`           | Liveness probe                       |
-| GET    | `/docs`             | Interactive Swagger UI               |
+| Method | Path                | Description                                        |
+|--------|---------------------|----------------------------------------------------|
+| POST   | `/sensors/readings` | Ingest one reading                                 |
+| GET    | `/sensors/latest`   | Most recent reading per sensor (real-time)         |
+| GET    | `/insights/hourly`  | Hourly aggregates for charting (`?hours=`, `?sensor_id=`) |
+| GET    | `/insights/summary` | Latest value + weighted 24h stats per sensor       |
+| GET    | `/health`           | Liveness probe                                     |
+| GET    | `/docs`             | Interactive Swagger UI                             |
 
 Sensor types: `temperature` (celsius, -40..85) and `humidity` (percent, 0..100).
 Out-of-range or unknown-type readings are rejected with a 422.
@@ -109,5 +111,6 @@ on 8000). Required repo secrets: `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`,
 
 - [x] Phase 1 — ingestion + real-time API, tables, Docker, CI/CD
 - [x] Phase 2 — sensor simulator + hourly transformation job + S3 Parquet archival
-- [ ] Phase 3 — analytics endpoints (`/insights/hourly`, `/insights/summary`) + Vercel dashboard
+- [x] Phase 3a — analytics endpoints (`/insights/hourly`, `/insights/summary`)
+- [ ] Phase 3b — Next.js dashboard on Vercel
 - [ ] Phase 4 — architecture diagram, API docs, demo workflow, presentation
