@@ -3,7 +3,7 @@
 # Host port 8001 so it coexists with employee-management-api on 8000.
 services:
   api:
-    image: ${DOCKERHUB_USERNAME:-maaadhavq}/sensor-data-pipeline:latest
+    image: ${DOCKERHUB_USERNAME:-madhavvvk}/sensor-data-pipeline:latest
     restart: unless-stopped
     ports:
       - "8001:8000"
@@ -12,7 +12,7 @@ services:
 
   # Keeps "live" data flowing for the demo dashboard.
   simulator:
-    image: ${DOCKERHUB_USERNAME:-maaadhavq}/sensor-data-pipeline:latest
+    image: ${DOCKERHUB_USERNAME:-madhavvvk}/sensor-data-pipeline:latest
     restart: unless-stopped
     command: python simulator/simulate.py --url http://api:8000
     depends_on:
