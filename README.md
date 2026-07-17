@@ -113,4 +113,4 @@ on 8000). Required repo secrets: `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`,
 - [x] Phase 2 — sensor simulator + hourly transformation job + S3 Parquet archival
 - [x] Phase 3a — analytics endpoints (`/insights/hourly`, `/insights/summary`)
 - [x] Phase 3b — Next.js dashboard ([sensor-dashboard](https://github.com/Maaadhavq/sensor-dashboard)) on Vercel
-- [x] Phase 4 — [architecture](docs/architecture.md) · [API docs](docs/api.md) · [demo workflow](docs/demo-workflow.md) · [deployment](docs/deployment.md) · presentation
+- [x] Phase 4 — [architecture](docs/architecture.md) · [API docs](docs/api.md) · [demo workflow](docs/demo-workflow.md) · [deployment](docs/deployment.md) · [presentation](docs/presentation.pptx)
