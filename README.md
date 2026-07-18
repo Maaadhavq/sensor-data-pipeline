@@ -6,6 +6,12 @@ ingestion service; a scheduled transformation job aggregates them into
 hourly analytics (RDS) and archives raw batches to an S3 data lake as
 Parquet; a Next.js dashboard on Vercel charts the insights.
 
+## Live
+
+- **Dashboard:** https://sensor-dashboard-tan.vercel.app
+- **API + Swagger docs:** http://13.126.146.113:8001/docs
+- **Dashboard repo:** https://github.com/Maaadhavq/sensor-dashboard
+
 ## Architecture
 
 ```
